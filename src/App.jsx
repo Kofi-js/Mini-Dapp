@@ -1,20 +1,26 @@
 import { useState } from 'react';
 import { ethers } from 'ethers';
 import abi from './abi.json';
+import { ToastContainer, toast } from 'react-toastify';
 
 function App() {
   const [depositAmount, setDepositAmount] = useState('');
   const [withdrawAmount, setWithdrawAmount] = useState('');
-  const [status, setStatus] = useState('');
+  // const notify = () => toast("Wow so easy!");
+  const notify = (message) => {
+    toast(message);
+  }
+  // const [status, setStatus] = useState('');
   const contractAddress = '0x77D2d583518bd593AC3193198661b73a59255Ab6';
   const contractABI = abi;
 
   // Request Wallet Connection
   async function requestAccounts() {
+    const message1 = "Failed to connect wallet";
     try {
       await window.ethereum.request({ method: 'eth_requestAccounts' });
     } catch (err) {
-      setStatus("Failed to connect wallet", err);
+      notify(message1, err);
     }
   }
 
@@ -28,14 +34,17 @@ function App() {
       const contract = new ethers.Contract(contractAddress, contractABI, signer);
 
       try {
+        const message2 = "Deposit successful";
         const tx = await contract.deposit(ethers.parseEther(depositAmount));
         await tx.wait(); // Wait for confirmation
-        setStatus("Deposit successful");
+        notify(message2);
       } catch (err) {
-        setStatus("Deposit Failed", err);
+        const message3 = "Deposit Failed";
+        notify(message3, err);
       }
     } else {
-      setStatus("MetaMask is not installed.");
+      const message4 = "MetaMask is not installed.";
+      notify(message4);
     }
   }
 
@@ -49,14 +58,17 @@ function App() {
       const contract = new ethers.Contract(contractAddress, contractABI, signer);
 
       try {
+        const message5 = "Withdrawal successful";
         const tx = await contract.withdraw(ethers.parseEther(withdrawAmount));
         await tx.wait(); // Wait for confirmation
-        setStatus("Withdrawal successful");
+        notify(message5);
       } catch (err) {
-        setStatus("Withdrawal Failed", err);
+        const message6 = "Withdrawal Failed";
+        notify(message6, err);
       }
     } else {
-      setStatus("MetaMask is not installed.");
+      const message7 = "MetaMask is not installed.";
+      notify(message7);
     }
   }
 
@@ -84,7 +96,8 @@ function App() {
         className='w-full px-4 py-2 mt-2 bg-gray-700 text-white rounded-md border border-gray-600 placeholder-gray-400'/>
         <button onClick={handleWithdraw} className='w-full px-4 py-2 bg-red-500  text-white font-medium rounded-md hover:bg-red-600 duration-200 ease-in-out'>Withdraw</button>
       </div>
-      {status && <p className='text-center mt-3 text-white'>{status}</p>}
+      {/* {status && <p className='text-center mt-3 text-white'>{status}</p>} */}
+      <ToastContainer/>
       </div>
       </div>
     </div>
