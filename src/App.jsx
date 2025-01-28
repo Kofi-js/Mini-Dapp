@@ -5,6 +5,7 @@ import abi from './abi.json';
 function App() {
   const [depositAmount, setDepositAmount] = useState('');
   const [withdrawAmount, setWithdrawAmount] = useState('');
+  const [status, setStatus] = useState('');
   const contractAddress = '0x77D2d583518bd593AC3193198661b73a59255Ab6';
   const contractABI = abi;
 
@@ -13,7 +14,7 @@ function App() {
     try {
       await window.ethereum.request({ method: 'eth_requestAccounts' });
     } catch (err) {
-      console.log("Failed to connect wallet", err);
+      setStatus("Failed to connect wallet", err);
     }
   }
 
@@ -29,12 +30,12 @@ function App() {
       try {
         const tx = await contract.deposit(ethers.parseEther(depositAmount));
         await tx.wait(); // Wait for confirmation
-        console.log("Deposit successful");
+        setStatus("Deposit successful");
       } catch (err) {
-        console.log("Deposit Failed", err);
+        setStatus("Deposit Failed", err);
       }
     } else {
-      console.log("MetaMask is not installed.");
+      setStatus("MetaMask is not installed.");
     }
   }
 
@@ -50,12 +51,12 @@ function App() {
       try {
         const tx = await contract.withdraw(ethers.parseEther(withdrawAmount));
         await tx.wait(); // Wait for confirmation
-        console.log("Withdrawal successful");
+        setStatus("Withdrawal successful");
       } catch (err) {
-        console.log("Withdrawal Failed", err);
+        setStatus("Withdrawal Failed", err);
       }
     } else {
-      console.log("MetaMask is not installed.");
+      setStatus("MetaMask is not installed.");
     }
   }
 
@@ -83,6 +84,7 @@ function App() {
         className='w-full px-4 py-2 mt-2 bg-gray-700 text-white rounded-md border border-gray-600 placeholder-gray-400'/>
         <button onClick={handleWithdraw} className='w-full px-4 py-2 bg-red-500  text-white font-medium rounded-md hover:bg-red-600 duration-200 ease-in-out'>Withdraw</button>
       </div>
+      {status && <p className='text-center mt-3 text-white'>{status}</p>}
       </div>
       </div>
     </div>
