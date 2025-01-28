@@ -60,23 +60,32 @@ function App() {
   }
 
   return (
-    <>
-      <h1>Mini Dapp</h1>
-      <input
+    <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+      <div className="bg-gray-800 p-8 rounded-lg shadow-xl w-full max-w-md space-y-6">
+      <h1 className='text-3xl font-bold text-center text-white mb-8'>Mini Dapp</h1>
+      <div className='spave-y-4'>
+        <div className='space-y-2'>
+        <input
         type="text"
         placeholder="Deposit Amount"
         value={depositAmount}
         onChange={(e) => setDepositAmount(e.target.value)}
+        className='w-full px-4 py-2 bg-gray-700 text-white rounded-md border border-gray-600 placeholder-gray-400'
       />
-      <button onClick={handleDeposit}>Deposit</button>
-      <input
+        <button onClick={handleDeposit} className='w-full px-4 py-2 bg-green-500 text-white font-medium rounded-md  hover:bg-green-600 duration-200 ease-in-out'>Deposit</button>
+      </div>
+      <div className='space-y-2'>   
+        <input
         type="text"
         placeholder="Withdraw Amount"
         value={withdrawAmount}
         onChange={(e) => setWithdrawAmount(e.target.value)}
-      />
-      <button onClick={handleWithdraw}>Withdraw</button>
-    </>
+        className='w-full px-4 py-2 mt-2 bg-gray-700 text-white rounded-md border border-gray-600 placeholder-gray-400'/>
+        <button onClick={handleWithdraw} className='w-full px-4 py-2 bg-red-500  text-white font-medium rounded-md hover:bg-red-600 duration-200 ease-in-out'>Withdraw</button>
+      </div>
+      </div>
+      </div>
+    </div>
   );
 }
 
